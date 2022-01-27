@@ -28,6 +28,17 @@
 
 import './index.css'
 
+const button = document.createElement('button')
+button.textContent = 'x'
+button.style.setProperty('position', 'fixed')
+button.style.setProperty('top', '0')
+button.style.setProperty('left', `${window.innerWidth / 2 - button.clientWidth / 2}px`)
+button.addEventListener('click', () => {
+  const { electron } = window as any
+  electron.quit()
+})
+document.body.append(button)
+
 function createColorButton(label: string, color: string, left: number) {
   const button = document.createElement('button')
   button.textContent = label
