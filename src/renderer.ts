@@ -26,6 +26,55 @@
  * ```
  */
 
-import './index.css';
+import './index.css'
 
-console.log('👋 This message is being logged by "renderer.js", included via webpack');
+function createColorButton(label: string, color: string, left: number) {
+  const button = document.createElement('button')
+  button.textContent = label
+  button.style.setProperty('position', 'fixed')
+  button.style.setProperty('top', '0')
+  button.style.setProperty('left', `${left}px`)
+  button.addEventListener('click', () => {
+    context.strokeStyle = color
+  })
+  document.body.append(button)
+}
+
+const canvas = document.createElement('canvas')
+canvas.setAttribute('width', `${window.innerWidth}`)
+canvas.setAttribute('height', `${window.innerHeight}`)
+document.body.append(canvas)
+
+const context = canvas.getContext('2d')
+context.lineCap = 'round'
+context.lineJoin = 'round'
+
+createColorButton('K', '#000', 0)
+createColorButton('R', '#F00', 30)
+createColorButton('G', 'lime', 60)
+createColorButton('B', 'skyblue', 90)
+createColorButton('W', 'white', 120)
+
+let drawing = false
+
+canvas.addEventListener('mousedown', (e) => {
+  const { clientX, clientY } = e
+
+  drawing = true
+
+  context.beginPath()
+  context.moveTo(clientX, clientY)
+})
+
+canvas.addEventListener('mousemove', (e) => {
+  if (!drawing) return
+
+  const { clientX, clientY } = e
+
+  context.lineTo(clientX, clientY)
+  context.stroke()
+})
+
+canvas.addEventListener('mouseup', (e) => {
+  drawing = false
+})
